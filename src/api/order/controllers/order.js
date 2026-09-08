@@ -50,12 +50,29 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
         };
 
         const model = strapi.contentType("api::order.order");
-        const validData = await strapi.contentAPI.validate.input(data, model);
 
-        const entry = await strapi.db
-            .query("api::order.order")
-            .create({ data: validData });
+        await strapi.contentAPI.validate.input(data, model, {
+            auth: ctx.state.auth,
+        });
 
-        return entry;
+        const sanitizedData = /** @type {any} */ (
+            await strapi.contentAPI.sanitize.input(data, model, {
+                auth: ctx.state.auth,
+            })
+        );
+
+        const entry = await strapi
+            .documents("api::order.order")
+            .create({ data: sanitizedData });
+
+        const sanitizedEntry = await strapi.contentAPI.sanitize.output(
+            entry,
+            model,
+            {
+                auth: ctx.state.auth,
+            },
+        );
+
+        return sanitizedEntry;
     },
 }));
