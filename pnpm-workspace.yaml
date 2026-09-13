@@ -1,7 +1,4 @@
-ignoredBuiltDependencies:
-  - core-js-pure
-
-onlyBuiltDependencies:
-  - '@swc/core'
-  - better-sqlite3
-  - esbuild
+allowBuilds:
+  '@swc/core': true
+  core-js-pure: true
+  esbuild: true
