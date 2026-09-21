@@ -24,9 +24,9 @@ const deniedTypes = [
 module.exports = ({ env }) => ({
     "users-permissions": {
         config: {
-            jwtManagement: "refresh",
-            sessions: {
-                httpOnly: true,
+            jwtManagement: "legacy-support",
+            jwt: {
+                expiresIn: "30d",
             },
         },
     },
